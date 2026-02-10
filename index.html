@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Мой сайт !!!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <style>
+    /* 🌌 Фон и базовое оформление */
+    body {
+  margin: 0;
+  background: url('1.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #ffff00;
+  font-family: "Open Sans", sans-serif;
+  text-align: center;
+  overflow-y: auto;      /* ✅ разрешаем вертикальную прокрутку */
+  overflow-x: hidden;    /* оставляем без горизонтальной прокрутки */
+  min-height: 100vh;     /* чтобы фон покрывал всё окно */
+    }
+
+    /* Затемняющий слой для читаемости текста */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: -2;
+    }
+
+    /* Слой снега */
+    #snow-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    h1 {
+      color: #ff0000;
+      font-size: 60px;
+      margin-top: 60px;
+      text-shadow: 2px 2px 6px black;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 40px;
+    }
+
+    ul li {
+      margin: 14px 0;
+    }
+
+    /* 💫 Ссылки с эффектом неона */
+    ul li a {
+      font-size: 26px;
+      color: #00ffff;
+      text-decoration: none;
+      font-family: serif;
+      text-shadow: 0 0 6px #00ffff, 0 0 12px #00ffff44;
+      transition: all 0.3s ease;
+    }
+
+    ul li a:hover {
+      color: #aaffff;
+      text-shadow:
+        0 0 8px #00ffff,
+        0 0 16px #00ffff,
+        0 0 24px #00ffff,
+        0 0 32px #00ffff;
+      transform: scale(1.05);
+    }
+
+    footer {
+      margin-top: 60px;
+      font-size: 20px;
+      color: #ffff66;
+      text-shadow: 1px 1px 4px black;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="snow-canvas"></canvas>
+
+  <h1>Мой Сайт</h1>
+
+  <ul>
+    <li>
+  
+    </li>
+    <li><a href="files.php">💾 Файлообменник</a></li>
+    <li><a href="music.php">🎵 Музыка</a></li>
+    <li><a href="root-files.php">☁️ Хранилище</a></li>
+    <li><a href="http://ivanovivan.duckdns.org:32769/guacamole/">💻 Удалённый сеанс</a></li>
+  </ul>
+
+  <footer>
+    Всего наилучшего!!!<br>И удачи.
+  </footer>
+
+  <script>
+    // ❄️ Анимация падающего снега
+    const canvas = document.getElementById('snow-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height, snowflakes = [];
+
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    function createSnowflakes(count) {
+      snowflakes = [];
+      for (let i = 0; i < count; i++) {
+        snowflakes.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          r: Math.random() * 4 + 1,
+          d: Math.random() * 1 + 0.5
+        });
+      }
+    }
+
+    createSnowflakes(150);
+
+    function drawSnowflakes() {
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = "white";
+      ctx.beginPath();
+      for (let flake of snowflakes) {
+        ctx.moveTo(flake.x, flake.y);
+        ctx.arc(flake.x, flake.y, flake.r, 0, Math.PI * 2);
+      }
+      ctx.fill();
+      moveSnowflakes();
+    }
+
+    let angle = 0;
+    function moveSnowflakes() {
+      angle += 0.01;
+      for (let flake of snowflakes) {
+        flake.y += Math.pow(flake.d, 2) + 1;
+        flake.x += Math.sin(angle) * 0.5;
+        if (flake.y > height) {
+          flake.y = 0;
+          flake.x = Math.random() * width;
+        }
+      }
+    }
+
+    function update() {
+      drawSnowflakes();
+      requestAnimationFrame(update);
+    }
+
+    update();
+  </script>
+
+</body>
+</html>
